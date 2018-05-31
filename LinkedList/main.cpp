@@ -18,6 +18,7 @@ std::shared_ptr<LinkedList<int>> someList(const int& n1, const int& n2, const in
 
 int main() {
 
+	while (true) {
 
 		LinkedList<int> list;
 		LinkedList<std::string> stringList;
@@ -71,8 +72,8 @@ int main() {
 		{
 			std::cout << num << std::endl;
 		}
-	
 
+	}
 	system("pause");
 
 	return 0;
