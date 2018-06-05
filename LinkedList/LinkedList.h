@@ -28,7 +28,7 @@ private:
 
 	Node* head;
 	Node* tail;
-	size_t items{};
+	size_t items = 0;
 public:
 	class Iterator {
 	private:
@@ -54,7 +54,7 @@ public:
 
 	LinkedList(const LinkedList& other);
 
-	LinkedList(const LinkedList&& other) noexcept;
+	LinkedList(LinkedList&& other) noexcept;
 
 	LinkedList& operator=(LinkedList&& other) noexcept;
 
@@ -153,6 +153,7 @@ LinkedList<DataType>::LinkedList() :
 
 template <typename DataType>
 LinkedList<DataType>::LinkedList(const LinkedList& other) {
+	std::cout << "Copy Assignment Ctor Called" << std::endl;
 	if (*this != other) {
 		this->head = nullptr;
 		this->tail = nullptr;
@@ -167,33 +168,39 @@ LinkedList<DataType>::LinkedList(const LinkedList& other) {
 }
 
 template <typename DataType>
-LinkedList<DataType>::LinkedList(const LinkedList&& other) noexcept {
-	if (*this != other) {
-		this->head = nullptr;
-		this->tail = nullptr;
-		this->items = 0;
+LinkedList<DataType>::LinkedList(LinkedList&& other) noexcept :
+	head(nullptr),
+	tail(nullptr),
+	items(0){
+	std::cout << "Move Ctor Called" << std::endl;
 
-		Node* current = other.head;
-		while (current != nullptr) {
-			this->LinkedList<DataType>::add(current->element);
-			current = other.head->next;
-		}
-	}
+	this->head = other.head;
+	this->tail = other.tail;
+	this->items = other.items;
+
+	other.head = nullptr;
+	other.tail = nullptr;
+	items = 0;
 }
 
 template<typename DataType>
 LinkedList<DataType>& LinkedList<DataType>::operator=(LinkedList&& other) noexcept {
-	if (*this != other) {
+	std::cout << "Move Assingment operator called" << std::endl;
+	if (this != &other) {
 		while (this->head != nullptr) {
 			Node* temp = this->head;
 			this->head = this->head->next;
 			delete temp;
 		}
-		Node* current = other.head;
-		while (current != nullptr) {
-			this->add(current->element);
-			current = current->next;
-		}
+		this->head = other.head;
+		this->tail = other.head;
+		this->items = other.items;
+
+		other.head = nullptr;
+		other.tail = nullptr;
+		other.items = 0;
+
+		return *this;
 	}
 	return *this;
 }
@@ -239,6 +246,8 @@ LinkedList<DataType>& LinkedList<DataType>::operator()(LinkedList& other) {
 
 template <typename DataType>
 LinkedList<DataType>::~LinkedList() {
+
+	std::cout << "Destructor Called" << std::endl;
 	while (this->head != nullptr) {
 		Node* temp = this->head;
 		this->head = this->head->next;
