@@ -40,7 +40,7 @@ public:
 
 		Iterator operator++();
 
-		Iterator& operator++(int);
+		Iterator operator++(int);
 
 		bool operator !=(const Iterator& other) const;
 
@@ -68,6 +68,8 @@ public:
 	~LinkedList();
 
 	void add(DataType element) override;
+
+	void remove(DataType element);
 
 	Iterator begin();
 
@@ -120,7 +122,7 @@ typename LinkedList<DataType>::Iterator LinkedList<DataType>::Iterator::operator
 }
 
 template <typename DataType>
-typename LinkedList<DataType>::Iterator& LinkedList<DataType>::Iterator::operator++(int) {
+typename LinkedList<DataType>::Iterator LinkedList<DataType>::Iterator::operator++(int) {
 	Iterator temp = this->ptr;
 	this->ptr = this->ptr->next;
 	return temp;
@@ -180,7 +182,7 @@ LinkedList<DataType>::LinkedList(LinkedList&& other) noexcept :
 
 	other.head = nullptr;
 	other.tail = nullptr;
-	items = 0;
+	other.items = 0;
 }
 
 template<typename DataType>
@@ -268,6 +270,16 @@ void LinkedList<DataType>::add(DataType element) {
 		this->tail = newNode;
 	}
 	++this->items;
+}
+// TO DO implement Remove
+template <typename DataType>
+void LinkedList<DataType>::remove(DataType element) {
+	
+	for (auto iter = this->begin(); iter != this->end(); ++iter) {
+		if (*iter == element) {
+			
+		}
+	}
 }
 
 template <typename DataType>
